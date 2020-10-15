@@ -5,14 +5,14 @@ export class Globals {
   static num_of_columns = 7;
 
   static base_cells = [
-    {row: 1, column: 1, base: 'red', bg_image_path: '../assets/o_red.png'},
-    {row: 2, column: 1, base: 'red', bg_image_path: '../assets/c_red.png'},
-    {row: 3, column: 1, base: 'red', bg_image_path: '../assets/t_red.png'},
-    {row: 4, column: 1, base: 'red', bg_image_path: '../assets/i_red.png'},
-    {row: 1, column: 5, base: 'green', bg_image_path: '../assets/o_green.png'},
-    {row: 2, column: 5, base: 'green', bg_image_path: '../assets/c_green.png'},
-    {row: 3, column: 5, base: 'green', bg_image_path: '../assets/t_green.png'},
-    {row: 4, column: 5, base: 'green', bg_image_path: '../assets/i_green.png'},
+    {row: 1, column: 1, base: 'red', bg_image_path: './assets/o_red.png'},
+    {row: 2, column: 1, base: 'red', bg_image_path: './assets/c_red.png'},
+    {row: 3, column: 1, base: 'red', bg_image_path: './assets/t_red.png'},
+    {row: 4, column: 1, base: 'red', bg_image_path: './assets/i_red.png'},
+    {row: 1, column: 5, base: 'green', bg_image_path: './assets/o_green.png'},
+    {row: 2, column: 5, base: 'green', bg_image_path: './assets/c_green.png'},
+    {row: 3, column: 5, base: 'green', bg_image_path: './assets/t_green.png'},
+    {row: 4, column: 5, base: 'green', bg_image_path: './assets/i_green.png'},
   ];
 
   static angle_to_row_move = new Map([

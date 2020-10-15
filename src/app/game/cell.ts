@@ -3,7 +3,7 @@ import { Octagon } from './octagon';
 
 export class Cell {
   // Default is none base properties
-  bg_image_path = '../assets/board_cell.png';
+  bg_image_path = './assets/board_cell.png';
   base = 'neutral';
   possible_move = false;
   octagon: Octagon = null;
