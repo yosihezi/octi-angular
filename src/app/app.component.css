@@ -1,0 +1,90 @@
+table,
+td {
+  border: 1px solid black;
+  border-collapse: separate;
+  table-layout: fixed;
+  min-width: max-content
+}
+td {
+  width:85px;
+  height:85px;
+  background-size: cover;
+}
+
+.octagon {
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  width:45px;
+  height:45px;
+}
+.octagon_chosen {
+  position: absolute;
+  top: -27px;
+  left: 13px;
+  width: 59px;
+  height: 59px;
+}
+.possible_move {
+  position: absolute;
+  top: -10px;
+  left: 32px;
+  width: 20px;
+  height: 20px;
+}
+.dir_0 {
+  position: absolute;
+  width: 20px;
+  height: 11px;
+  top: -3px;
+  left: 63px;
+}
+.dir_45 {
+  position: absolute;
+  width: 21px;
+  height: 22px;
+  bottom: 10px;
+  left: 55px;
+}
+.dir_90 {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  bottom: 18px;
+  left: 37px;
+}
+.dir_135 {
+  position: absolute;
+  width: 22px;
+  height: 21px;
+  bottom: 10px;
+  left: 8px;
+}
+.dir_180 {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  top: -3px;
+  left: 2px;
+}
+.dir_225 {
+  position: absolute;
+  width: 21px;
+  height: 22px;
+  bottom: -36px;
+  left: 9px;
+}
+.dir_270 {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  bottom: -43px;
+  left: 37px;
+}
+.dir_315 {
+  position: absolute;
+  width: 22px;
+  height: 21px;
+  bottom: -36px;
+  left: 55px;
+}
