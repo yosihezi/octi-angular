@@ -5,8 +5,8 @@ import { Globals } from './globals';
 export class Board {
   cells: Cell[][] = [];
   octagons: Octagon[] = [];
-  green_remaining_arms = 10;
-  red_remaining_arms = 10;
+  green_remaining_arms = 12;
+  red_remaining_arms = 12;
   
   constructor(rows: number, columns: number) {
     for (let r = 0; r < rows; r++) {

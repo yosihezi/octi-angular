@@ -13,27 +13,6 @@
   <div class="col-xs-5">
     <button 
     [disabled]="chosen_cell === null || 
-                (!chosen_cell.octagon.can_arm) || 
-                cur_status != 'arm_or_first_move'" 
-    (click)="armAngle(arming_angle.value)"
-    type="button" class="btn btn-primary">Arm</button>
-  </div>
-  <div class="col-xs-5">
-    <input #arming_angle 
-      [disabled]="chosen_cell === null || 
-                  (!chosen_cell.octagon.can_arm) || 
-                  cur_status != 'arm_or_first_move'" 
-      type="text" 
-      class="form-control" 
-      placeholder="Arming Angle"
-      aria-label="arming_angle"
-      aria-describedby="basic-addon1"
-      maxlength="3"
-      (keyup.enter)="armAngle(arming_angle.value)">
-  </div>
-  <div class="col-xs-5">
-    <button 
-    [disabled]="chosen_cell === null || 
                 cur_status != 'jump_over'" 
     (click)="switchBase()"
     type="button" class="btn btn-warning">End Turn</button>
@@ -47,6 +26,7 @@
     <td
       *ngFor="let cell of row; index as c"
       (click)="onCellPress(cell)"
+      (dblclick)="onCellDoubleClick(cell, $event)"
       style="background-image: url({{cell.bg_image_path}});"
     >
       <div *ngIf="(cell.octagon != null); else emptyCell" style="position: relative;">
@@ -59,7 +39,7 @@
         <img *ngIf="cell.octagon.base == 'red'"
           class="octagon" src="./assets/octagon_red.png" alt="red_octagon">
         <img *ngIf="cell.octagon.arms.get(0) === true" 
-          class="dir_0" alt="arm_0_degree" src="./assets/dir_0.png">
+          class="dir_0" alt="   " src="./assets/dir_0.png">
         <img *ngIf="cell.octagon.arms.get(45) === true" 
           class="dir_45" alt="arm_45_degree" src="./assets/dir_45.png">
         <img *ngIf="cell.octagon.arms.get(90) === true" 

@@ -20,10 +20,29 @@ export class AppComponent {
   cur_warning: string;
   chosen_angle: number;
   possible_immediate_moves: Move[] = [];
-  visited_cells: Cell[] = []; // to prevent never ending loops 
+  visited_cells: Cell[] = []; // to prevent never ending loops
+  
+  // TODO: inject this in the CSS
+  podWidth = 55;
+  podHeight = 55;
 
   constructor() {
     this.reset();
+  }
+
+  onCellDoubleClick(cell: Cell, e){
+    console.log("Mouse position: x: " + e.offsetX + "y: " + e.offsetY);
+    let movedOffsetX: number = e.offsetX - this.podWidth / 2 
+    let movedOffsetY: number = -(e.offsetY - this.podHeight / 2)
+    console.log("Moved position: x: " + movedOffsetX + "y: " + movedOffsetY);
+    let offsetAngleRad : number = Math.atan2(movedOffsetY, movedOffsetX);
+    let offsetDegrees : number = offsetAngleRad * (180/Math.PI); 
+    console.log("Offset angle [degrees]: " + offsetDegrees);
+    // Assign angle to section of (360/8 = 45)
+    let sectionAngle: number = Math.round(offsetDegrees/(360/8))*(360/8);
+    console.log("Section angle [degrees]: " + sectionAngle);
+    let sectionAnglePositive : number = sectionAngle < 0 ? 360 + sectionAngle : sectionAngle;
+    this.armAngle(sectionAnglePositive);
   }
 
   onCellPress(cell: Cell) {
@@ -174,7 +193,7 @@ export class AppComponent {
     }
   }
 
-  armAngle(angle_string: string) {
+  armAngle(angle) {
     if ((this.cur_base == 'red' && this.board.red_remaining_arms == 0) 
         ||
         (this.cur_base == 'green' && this.board.green_remaining_arms == 0)) {
@@ -182,7 +201,6 @@ export class AppComponent {
       return;
     }
 
-    let angle = parseInt(angle_string);
     let warning_msg = this.chosen_cell.octagon.addArm(angle)
     
     if (warning_msg == '') {
