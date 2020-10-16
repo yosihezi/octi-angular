@@ -201,7 +201,7 @@ export class AppComponent {
       return;
     }
 
-    let warning_msg = this.chosen_cell.octagon.addArm(angle)
+    let warning_msg = this.chosen_cell?.octagon.addArm(angle)
     
     if (warning_msg == '') {
       if (this.cur_base == 'red') {
