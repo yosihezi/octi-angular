@@ -20,10 +20,10 @@ td {
 }
 .octagon_chosen {
   position: absolute;
-  top: -24.5px;
-  left: 14px;
-  width: 59px;
-  height: 59px;
+  top: -32.5px;
+  left: 6px;
+  width: 72.5px;
+  height: 72.5px;
 }
 .possible_move {
   position: absolute;
