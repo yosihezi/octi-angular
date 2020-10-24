@@ -1,4 +1,4 @@
-export class Octagon {
+export class Pod {
   public arms: Map<number, boolean>;
   public can_attack = false;
   public can_arm = true;

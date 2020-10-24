@@ -2,10 +2,10 @@
 <div>
   Red base ammunition: 
   <label style="color:red; font-size:x-large; border: 1px solid black;">
-    {{ board.red_remaining_arms }}</label>
+    {{ board.red_remaining_progs }}</label>
    Green base ammunition: 
   <label style="color:green; font-size:x-large; border: 1px solid black;">
-    {{ board.green_remaining_arms }}</label>
+    {{ board.green_remaining_progs }}</label>
 </div>
 <p>It's {{cur_base}}'s turn. {{ cur_guidance }} {{ cur_warning }}</p>
 <div class="form-group row">
@@ -13,7 +13,7 @@
   <div class="col-xs-5">
     <button 
     [disabled]="chosen_cell === null || 
-                (!chosen_cell.octagon.can_arm) || 
+                (!chosen_cell.pod.can_arm) || 
                 cur_status != 'arm_or_first_move'" 
     (click)="armAngle(arming_angle.value)"
     type="button" class="btn btn-primary">Arm</button>
@@ -21,7 +21,7 @@
   <div class="col-xs-5">
     <input #arming_angle 
       [disabled]="chosen_cell === null || 
-                  (!chosen_cell.octagon.can_arm) || 
+                  (!chosen_cell.pod.can_arm) || 
                   cur_status != 'arm_or_first_move'" 
       type="text" 
       class="form-control" 
@@ -40,48 +40,10 @@
   </div>
 </div>
 <!-- <button 
-  [disabled]="chosen_cell === null || chosen_cell.octagon.can_attack === false"
+  [disabled]="chosen_cell === null || chosen_cell.pod.can_attack === false"
   (click)="calcPossibleMoves()">Attack</button> -->
-<table>
-  <tr *ngFor="let row of board.cells; index as r">
-    <td
-      *ngFor="let cell of row; index as c"
-      (click)="onCellPress(cell)"
-      style="background-image: url({{cell.bg_image_path}});"
-    >
-      <div *ngIf="(cell.octagon != null); else emptyCell" style="position: relative;">
-        <img *ngIf="chosen_cell != null && 
-                    chosen_cell.row == cell.row && 
-                    chosen_cell.column == cell.column"
-          class="octagon_chosen" src="./assets/octagon_chosen_yellow.png" alt="chosen_octagon">
-        <img *ngIf="cell.octagon.base == 'green'"
-          class="octagon" src="./assets/octagon_green.png" alt="green_octagon">
-        <img *ngIf="cell.octagon.base == 'red'"
-          class="octagon" src="./assets/octagon_red.png" alt="red_octagon">
-        <img *ngIf="cell.octagon.arms.get(0) === true" 
-          class="dir_0" alt="arm_0_degree" src="./assets/dir_0.png">
-        <img *ngIf="cell.octagon.arms.get(45) === true" 
-          class="dir_45" alt="arm_45_degree" src="./assets/dir_45.png">
-        <img *ngIf="cell.octagon.arms.get(90) === true" 
-          class="dir_90" alt="arm_90_degree" src="./assets/dir_90.png">
-        <img *ngIf="cell.octagon.arms.get(135) === true" 
-          class="dir_135" alt="arm_135_degree" src="./assets/dir_135.png">
-        <img *ngIf="cell.octagon.arms.get(180) === true" 
-          class="dir_180" alt="arm_180_degree" src="./assets/dir_0.png">
-        <img *ngIf="cell.octagon.arms.get(225) === true" 
-          class="dir_225" alt="arm_225_degree" src="./assets/dir_45.png">
-        <img *ngIf="cell.octagon.arms.get(270) === true" 
-          class="dir_270" alt="arm_270_degree" src="./assets/dir_90.png">
-        <img *ngIf="cell.octagon.arms.get(315) === true" 
-          class="dir_315" alt="arm_315_degree" src="./assets/dir_135.png">
-      </div>
-      <ng-template #emptyCell>
-        <div style="position: relative;">
-          <img *ngIf="cell.possible_move == true"
-          class="possible_move" src="./assets/possible_move.png" alt="possible_move">
-        </div>
-      </ng-template>
-    </td>
-  </tr>
-</table>
+<app-board></app-board>
+<!-- Board -->
+
+<!-- end of board compoenent -->
 <button type="button" class="btn btn-warning" (click)="reset()">Restart</button>

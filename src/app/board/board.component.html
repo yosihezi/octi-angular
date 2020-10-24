@@ -1,0 +1,42 @@
+<table>
+    <tr *ngFor="let row of cells; index as r">
+      <td
+        *ngFor="let cell of row; index as c"
+        (click)="onCellPress(cell)"
+        style="background-image: url({{cell.bg_image_path}});"
+      >
+        <div *ngIf="(cell.pod != null); else emptyCell" style="position: relative;">
+          <img *ngIf="chosen_cell != null && 
+                      chosen_cell.row == cell.row && 
+                      chosen_cell.column == cell.column"
+            class="pod_chosen" src="../../assets/pod_chosen_yellow.png" alt="chosen_pod">
+          <img *ngIf="cell.pod.base == 'green'"
+            class="pod" src="../../../../assets/pod_green.png" alt="green_pod">
+          <img *ngIf="cell.pod.base == 'red'"
+            class="pod" src="../../assets/pod_red.png" alt="red_pod">
+          <img *ngIf="cell.pod.arms.get(0) === true" 
+            class="dir_0" alt="arm_0_degree" src="../../assets/dir_0.png">
+          <img *ngIf="cell.pod.arms.get(45) === true" 
+            class="dir_45" alt="arm_45_degree" src="../../assets/dir_45.png">
+          <img *ngIf="cell.pod.arms.get(90) === true" 
+            class="dir_90" alt="arm_90_degree" src="../../assets/dir_90.png">
+          <img *ngIf="cell.pod.arms.get(135) === true" 
+            class="dir_135" alt="arm_135_degree" src="../../assets/dir_135.png">
+          <img *ngIf="cell.pod.arms.get(180) === true" 
+            class="dir_180" alt="arm_180_degree" src="../../assets/dir_0.png">
+          <img *ngIf="cell.pod.arms.get(225) === true" 
+            class="dir_225" alt="arm_225_degree" src="../../assets/dir_45.png">
+          <img *ngIf="cell.pod.arms.get(270) === true" 
+            class="dir_270" alt="arm_270_degree" src="../../assets/dir_90.png">
+          <img *ngIf="cell.pod.arms.get(315) === true" 
+            class="dir_315" alt="arm_315_degree" src="../../assets/dir_135.png">
+        </div>
+        <ng-template #emptyCell>
+          <div style="position: relative;">
+            <img *ngIf="cell.possible_move == true"
+            class="possible_move" src="../../assets/possible_move.png" alt="possible_move">
+          </div>
+        </ng-template>
+      </td>
+    </tr>
+  </table>

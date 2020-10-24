@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Board } from './game/board';
 import { Cell } from './game/cell';
 import { Globals } from './game/globals';
 import { Move } from './game/move';
+import { BoardComponent } from './board/board.component';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { Move } from './game/move';
 
 export class AppComponent {
   title = 'angular-octi';
-  board: Board;
+  board: BoardComponent;
   cur_base: string;
   chosen_cell: Cell;
   cur_status: string;
@@ -28,11 +28,11 @@ export class AppComponent {
 
   onCellPress(cell: Cell) {
     switch (this.cur_status) {
-      case 'choose_octagon':
-        if (cell.octagon == null) {
-          this.cur_warning = 'You must choose an octagon'
-        } else if (cell.octagon.base != this.cur_base) {
-          this.cur_warning = 'You must choose an octagon from your own base!'
+      case 'choose_pod':
+        if (cell.pod == null) {
+          this.cur_warning = 'You must choose an pod'
+        } else if (cell.pod.base != this.cur_base) {
+          this.cur_warning = 'You must choose an pod from your own base!'
         } else {
           this.chosen_cell = cell;
           this.updateStatus('arm_or_first_move');
@@ -40,8 +40,8 @@ export class AppComponent {
         break;
 
       case 'arm_or_first_move':
-        if (cell.octagon != null && cell.octagon.base == this.cur_base) {
-          // Change octagon choice
+        if (cell.pod != null && cell.pod.base == this.cur_base) {
+          // Change pod choice
 
           this.clearPossibleMoves();
           this.chosen_cell = cell;
@@ -85,8 +85,8 @@ export class AppComponent {
     this.cur_warning = '';
 
     switch (next_status) {
-      case 'choose_octagon':
-        this.cur_guidance = 'Choose your octagon.';
+      case 'choose_pod':
+        this.cur_guidance = 'Choose your pod.';
         break;
 
       case 'arm_or_first_move':
@@ -133,8 +133,8 @@ export class AppComponent {
     let isEnded = false;
 
     Globals.base_cells.forEach(base_cell => {
-      if (this.chosen_cell != null && this.chosen_cell.octagon != null) {
-        if (base_cell.base != this.chosen_cell.octagon.base) {
+      if (this.chosen_cell != null && this.chosen_cell.pod != null) {
+        if (base_cell.base != this.chosen_cell.pod.base) {
           console.log(base_cell);
           if (base_cell.row == this.chosen_cell.row && 
             base_cell.column == this.chosen_cell.column) {
@@ -170,26 +170,26 @@ export class AppComponent {
       this.cur_base = (this.cur_base == 'red') ? 'green' : 'red'
 
       // initiate status
-      this.updateStatus('choose_octagon');
+      this.updateStatus('choose_pod');
     }
   }
 
   armAngle(angle_string: string) {
-    if ((this.cur_base == 'red' && this.board.red_remaining_arms == 0) 
+    if ((this.cur_base == 'red' && this.board.red_remaining_progs == 0) 
         ||
-        (this.cur_base == 'green' && this.board.green_remaining_arms == 0)) {
+        (this.cur_base == 'green' && this.board.green_remaining_progs == 0)) {
       this.cur_warning = 'No ammunation left!';
       return;
     }
 
     let angle = parseInt(angle_string);
-    let warning_msg = this.chosen_cell.octagon.addArm(angle)
+    let warning_msg = this.chosen_cell.pod.addArm(angle)
     
     if (warning_msg == '') {
       if (this.cur_base == 'red') {
-        this.board.red_remaining_arms--;
+        this.board.red_remaining_progs--;
       } else {
-        this.board.green_remaining_arms--;
+        this.board.green_remaining_progs--;
       }
       this.switchBase(); // move the turn to the other base
     } else {
@@ -200,7 +200,7 @@ export class AppComponent {
 
   performMove(move: Move) {
     let visited_cell = this.chosen_cell;
-    this.moveOctagon(move.next_cell.row, move.next_cell.column);
+    this.movePod(move.next_cell.row, move.next_cell.column);
     if (move.jumped_over_cell == null) {
       // Can't jump again. Turn ends
       this.switchBase(); 
@@ -208,11 +208,11 @@ export class AppComponent {
     } else {
       // Maybe can move again
 
-      // TODO - remember to delete opposite base octagons if needed, and add ammuniation      
+      // TODO - remember to delete opposite base pods if needed, and add ammuniation      
       // Save visited_cells - don't allow visit the same cells twice unless a kill ocures
-      if (move.jumped_over_cell.octagon.base != this.chosen_cell.octagon.base) {
+      if (move.jumped_over_cell.pod.base != this.chosen_cell.pod.base) {
         // That's a kill
-        let victimArms = this.killOctagon(move.jumped_over_cell);
+        let victimArms = this.killPod(move.jumped_over_cell);
         this.gainArms(victimArms);
         this.visited_cells = [];
       } else {
@@ -232,32 +232,32 @@ export class AppComponent {
 
   gainArms(num_of_arms) {
     if (this.cur_base == 'red') {
-      this.board.red_remaining_arms += num_of_arms;
+      this.board.red_remaining_progs += num_of_arms;
     } else {
-      this.board.green_remaining_arms += num_of_arms;
+      this.board.green_remaining_progs += num_of_arms;
     }
   }
 
-  killOctagon(victimCell: Cell) : number {
+  killPod(victimCell: Cell) : number {
     let victimArms = 0;
 
     // Count victim arms
-    victimCell.octagon.arms.forEach((is_arm: boolean, angle: number) => {
+    victimCell.pod.arms.forEach((is_arm: boolean, angle: number) => {
       if (is_arm) {
         victimArms++;
       }
     });
 
     // Kill victim:
-    this.board.octagons = this.board.octagons.filter(victim => victim == victimCell.octagon);
-    victimCell.octagon = null;
+    this.board.pods = this.board.pods.filter(victim => victim == victimCell.pod);
+    victimCell.pod = null;
 
     return victimArms;
   }
 
-  moveOctagon(row: number, column: number) {
-    this.board.cells[row][column].octagon = this.chosen_cell.octagon;
-    this.chosen_cell.octagon = null;
+  movePod(row: number, column: number) {
+    this.board.cells[row][column].pod = this.chosen_cell.pod;
+    this.chosen_cell.pod = null;
     this.chosen_cell = this.board.cells[row][column];
   }
 
@@ -283,20 +283,20 @@ export class AppComponent {
     let next_possible_cell: Cell;
     let jumped_over_cell: Cell;
 
-    this.chosen_cell.octagon.arms.forEach((is_arm: boolean, angle: number) => {
+    this.chosen_cell.pod.arms.forEach((is_arm: boolean, angle: number) => {
       if (is_arm) {
         next_possible_cell = this.getNextCell(this.chosen_cell, angle);
         if (next_possible_cell != null) {
-          if (next_possible_cell.octagon == null && only_jumps_allowed == false) {
+          if (next_possible_cell.pod == null && only_jumps_allowed == false) {
             // simple move
             console.log('angle: ' + angle + ' leads to: (' + next_possible_row + ',' + next_possible_column + ')');
             this.possible_immediate_moves.push(new Move(next_possible_cell));
             
-          } else if (next_possible_cell.octagon != null) {
+          } else if (next_possible_cell.pod != null) {
             // check jump move
             jumped_over_cell = next_possible_cell
             next_possible_cell = this.getNextCell(next_possible_cell, angle);
-            if (next_possible_cell != null && next_possible_cell.octagon == null &&
+            if (next_possible_cell != null && next_possible_cell.pod == null &&
               (!this.visited_cells.includes(next_possible_cell))) {
               console.log('angle: ' + angle + ' leads to: (' + next_possible_row + ',' + next_possible_column + ')');
               this.possible_immediate_moves.push(new Move(next_possible_cell,
@@ -314,11 +314,11 @@ export class AppComponent {
   }
 
   reset() {
-    this.board = new Board(Globals.num_of_rows, Globals.num_of_columns);
+    this.board = new BoardComponent();
     this.cur_base = 'red';
-    this.cur_status = 'choose_octagon';
+    this.cur_status = 'choose_pod';
     this.chosen_cell = null;
-    this.cur_guidance = 'Choose your octagon.';
+    this.cur_guidance = 'Choose your pod.';
     this.cur_warning = '';
     this.chosen_angle = 0;
   }
